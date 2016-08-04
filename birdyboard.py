@@ -1,11 +1,12 @@
 import sys
-from account import *
+from user import *
+from allUsers import *
 ''' Menu for Birdyboard copyright infringement and IP theft CLI Application.
 '''
 class Menu:
 
     def __init__(self):
-        pass
+        self.allusers = Allusers()
 
 
 
@@ -20,14 +21,17 @@ class Menu:
             choice = input('>')
 
             if choice == '1':
-                user = Account.new_account()
+                user = User.new_account()
+                self.allusers.add_account(user)
+
                 print('user ID is: ' + user.user_id + '\n')
 
             if choice == '2':
-                user = user()
+                pass
 
             if choice == '3':
                 view_chirp = view_chirp()
+
 
             if choice == '4':
                 public_chirp = public_chirp()
