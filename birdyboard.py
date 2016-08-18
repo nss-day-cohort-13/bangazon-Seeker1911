@@ -1,43 +1,73 @@
 import sys
 from user import *
 from allUsers import *
+from chirp import *
+import pickle
 ''' Menu for Birdyboard copyright infringement and IP theft CLI Application.
 '''
+users = list()
+private_chirps = list()
+chirps = list()
 class Menu:
 
-    def __init__(self):
-        self.allusers = Allusers()
+    def deserialize_lists(self):
+        global users
+        with open('users.txt', 'rb+') as f:
+            try:
+                users = pickle.load(f)
+            except:
+                users = []
 
+        global private_chirps
+        with open('private_chirps.txt', 'rb+') as f:
+            try:
+                private_chirps = pickle.load(f)
+            except:
+                private_chirps = []
 
+        global chirps
+        with open('chirps.txt', 'rb+') as f:
+            try:
+                chirps = pickle.load(f)
+            except:
+                chirps = []
+
+        self.main_menu()
 
     def main_menu(self):
+        global users
+        global private_chirps
+        global chirps
+
         while True:
             print('1. New User Account')
             print('2. Select User')
             print('3. View Chirps')
-            print('4. Public Chirp')
-            print('5. Private Chirp')
+            print('4. Chirp')
+            print('5. Send a DM')
             print('6. Exit')
             choice = input('>')
 
             if choice == '1':
-                user = User.new_account()
-                self.allusers.add_account(user)
-
-                print('user ID is: ' + user.user_id + '\n')
+                user = User.new_account(users)
 
             if choice == '2':
-                pass
+                user = User.get_account(users)
 
             if choice == '3':
-                view_chirp = view_chirp()
-
+                receiver = user
+                view_chirp = Chirp.view_chirp(chirps, private_chirps, user.user_id)
 
             if choice == '4':
-                public_chirp = public_chirp()
+                message = input('Type message: ')
+                print('')
+                Chirp.public_chirp(chirps, message, user.user_id)
 
             if choice == '5':
-                private_chirp = private_chirp()
+                message = input('Type message: ')
+                print(' ')
+                receiver = User.get_account(users)
+                Chirp.private_chirp(private_chirps, message, user.user_id, receiver.user_id)
 
             if choice == '6':
                 break
@@ -45,4 +75,4 @@ class Menu:
 
 if __name__ == '__main__':
     menu = Menu()
-    menu.main_menu()
+    menu.deserialize_lists()
