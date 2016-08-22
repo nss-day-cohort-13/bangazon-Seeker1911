@@ -28,17 +28,26 @@ class Chirp:
         Writer.save_private_chirp(chirps)
         # print(message)
 
-    def view_chirp(chirps, private_chirps, sender):
+    def view_chirp(chirps, private_chirps, sender, users):
         key = 0
         print('Private chirps..........')
         for key,i in enumerate(private_chirps):
-            if i.sender == sender or i.receiver == sender:
-                print(str(key + 1) + '. From ' + i.sender + ' to '
-                      + i.receiver + ': ', i.message)
+            chirper = None
+            receiver = None
+            for user in users:
+                if i.sender == sender or i.receiver == sender:
+                    chirper = user.user_name
+                    receiver = i.receiver
+                    print(str(key + 1) + '. From ' + chirper + ' to '
+                          + receiver + ': ', i.message)
         print('--------------------------')
         print('Public chirps.........')
         for key,i in enumerate(chirps):
-            print(str(key+1) + '. ' + i.sender + '', i.message)
+            chirper = None
+            for user in users:
+                if user.user_id == i.sender:
+                    chirper = user.user_name
+            print(str(key+1) + '. ' + chirper + '', i.message)
         print('------------------------')
 
         # get_user = input("> ")

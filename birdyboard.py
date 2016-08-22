@@ -56,7 +56,7 @@ class Menu:
 
             if choice == '3':
                 receiver = user
-                view_chirp = Chirp.view_chirp(chirps, private_chirps, user.user_id)
+                view_chirp = Chirp.view_chirp(chirps, private_chirps, user.user_id, users)
 
             if choice == '4':
                 message = input('Type message: ')
